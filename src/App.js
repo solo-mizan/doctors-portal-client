@@ -7,6 +7,7 @@ import Login from './Pages/Login/Login';
 import Navbar from './Pages/Shared/Navbar';
 import ContactUs from './Pages/ContactUs/ContactUs';
 import Appointment from './Pages/Appointment/Appointment';
+import Footer from './Pages/Shared/Footer';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/contact' element={<ContactUs></ContactUs>}></Route>
         <Route path='/appointment' element={<Appointment></Appointment>}></Route>
       </Routes>
+      <Footer></Footer>
     </div>
   );
 }
