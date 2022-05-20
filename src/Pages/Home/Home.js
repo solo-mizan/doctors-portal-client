@@ -8,13 +8,17 @@ import Services from './Services';
 
 const Home = () => {
     return (
-        <div className='mx-8 lg:mx-12'>
-            <Banner></Banner>
-            <Info></Info>
-            <Services></Services>
-            <AppointmentHome></AppointmentHome>
-            <Reviews></Reviews>
-            <Footer></Footer>
+        <div>
+            <div className='mx-8 lg:mx-12'>
+                <Banner></Banner>
+                <Info></Info>
+                <Services></Services>
+                <AppointmentHome></AppointmentHome>
+                <Reviews></Reviews>
+            </div>
+            <div>
+                <Footer></Footer>
+            </div>
         </div>
     );
 };
