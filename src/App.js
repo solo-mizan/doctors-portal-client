@@ -11,7 +11,7 @@ import Footer from './Pages/Shared/Footer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App mx-auto">
       <Navbar></Navbar>
       <Routes>
         <Route path='/' element={<Home></Home>}></Route>
@@ -22,7 +22,6 @@ function App() {
         <Route path='/contact' element={<ContactUs></ContactUs>}></Route>
         <Route path='/appointment' element={<Appointment></Appointment>}></Route>
       </Routes>
-      <Footer></Footer>
     </div>
   );
 }

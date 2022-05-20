@@ -7,7 +7,7 @@ const AppointmentHome = () => {
         <section style={{
             background: `url(${bg})`
         }}
-            className='flex text-white items-center rounded-xl shadow-2xl p-5'>
+            className='flex text-white items-center rounded-xl shadow-2xl px-4 pt-5'>
             <div className='flex-1 hidden lg:block'>
                 <img className='mt-[-120px]' src={doctor} alt="" />
             </div>
