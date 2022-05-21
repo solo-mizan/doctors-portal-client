@@ -1,36 +1,41 @@
 import React from 'react';
-import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading/Loading';
 
 const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [signInWithGoogle, gUser, loading1, error1] = useSignInWithGoogle(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const [
         createUserWithEmailAndPassword,
         user,
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
+
+    const navigate = useNavigate();
     let LoginErrorMsg;
 
-    if (loading || loading1) {
+    if (loading || loading1 || updating) {
         return <Loading />
     }
 
-    if (error || error1) {
-        LoginErrorMsg = <p className='label-text-alt text-red-400'>{error?.message || error1?.message}</p>
+    if (error || error1 || updateError) {
+        LoginErrorMsg = <p className='label-text-alt text-red-400'>{error?.message || error1?.message || updateError?.message}</p>
     }
 
     if (gUser || user) {
         console.log(gUser || user);
     }
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data);
-        createUserWithEmailAndPassword(data.email, data.password);
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name });
+        navigate('/appointment');
 
     };
     return (
