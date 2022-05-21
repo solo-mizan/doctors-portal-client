@@ -1,19 +1,19 @@
 import React from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading/Loading';
 
-const Login = () => {
+const Register = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [signInWithGoogle, gUser, loading1, error1] = useSignInWithGoogle(auth);
     const [
-        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
         user,
         loading,
         error,
-    ] = useSignInWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth);
     let LoginErrorMsg;
 
     if (loading || loading1) {
@@ -25,21 +25,45 @@ const Login = () => {
     }
 
     if (gUser || user) {
-        console.log(gUser);
+        console.log(gUser || user);
     }
 
     const onSubmit = (data) => {
         console.log(data);
-        signInWithEmailAndPassword(data.email, data.password);
+        createUserWithEmailAndPassword(data.email, data.password);
 
     };
-
     return (
         <div className='flex h-screen justify-center items-center'>
             <div className="card w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <h2 className="text-center text-2xl font-bold">Login</h2>
+                    <h2 className="text-center text-2xl font-bold">Register</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
+
+                        <div className="form-control w-full max-w-xs">
+                            <label className="label">
+                                <span className="label-text">Enter Your Full Name</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Type here"
+                                className="input input-bordered w-full max-w-xs"
+                                {...register("name", {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is required'
+                                    },
+                                    pattern: {
+                                        value: /[A-Za-z]{5}/,
+                                        message: 'Provide your Fullname '
+                                    }
+                                })}
+                            />
+                            <label className="label">
+                                {errors.name?.type === 'required' && <span className='label-text-alt text-red-500'>{errors.name.message}</span>}
+                                {errors.name?.type === 'pattern' && <span className='label-text-alt text-red-500'>{errors.name.message}</span>}
+                            </label>
+                        </div>
 
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
@@ -92,11 +116,11 @@ const Login = () => {
                         <label className='label'>
                             {LoginErrorMsg}
                         </label>
-                        <input type='submit' value='Login' className='btn btn-outline w-full max-w-xs' />
+                        <input type='submit' value='Register' className='btn btn-outline w-full max-w-xs' />
                     </form>
                     <div className='flex justify-evenly'>
-                        <div><p><small>New to Doctors Portal?</small></p></div>
-                        <div><small><Link className='text-secondary' to="/register">Click here to Register</Link></small></div>
+                        <div><p><small>Already have an account?</small></p></div>
+                        <div><small><Link className='text-secondary' to="/login">Click here to Login</Link></small></div>
                     </div>
                     <div className="divider">OR</div>
                     <button onClick={() => signInWithGoogle()}
@@ -108,4 +132,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
