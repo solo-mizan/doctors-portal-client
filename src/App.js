@@ -11,22 +11,29 @@ import Register from './Pages/Login/Register';
 import RequireAuth from './Pages/Login/RequireAuth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App() {
+
+  // Create a client
+  const queryClient = new QueryClient()
+
   return (
     <div className="App mx-auto">
-      <Navbar></Navbar>
-      <Routes>
-        <Route path='/' element={<Home></Home>}></Route>
-        <Route path='/home' element={<Home></Home>}></Route>
-        <Route path='/about' element={<About></About>}></Route>
-        <Route path='/reviews' element={<Reviews></Reviews>}></Route>
-        <Route path='/login' element={<Login></Login>}></Route>
-        <Route path='/register' element={<Register></Register>}></Route>
-        <Route path='/contact' element={<ContactUs></ContactUs>}></Route>
-        <Route path='/appointment' element={<RequireAuth><Appointment /></RequireAuth>}></Route>
-      </Routes>
-      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <Navbar></Navbar>
+        <Routes>
+          <Route path='/' element={<Home></Home>}></Route>
+          <Route path='/home' element={<Home></Home>}></Route>
+          <Route path='/about' element={<About></About>}></Route>
+          <Route path='/reviews' element={<Reviews></Reviews>}></Route>
+          <Route path='/login' element={<Login></Login>}></Route>
+          <Route path='/register' element={<Register></Register>}></Route>
+          <Route path='/contact' element={<ContactUs></ContactUs>}></Route>
+          <Route path='/appointment' element={<RequireAuth><Appointment /></RequireAuth>}></Route>
+        </Routes>
+        <ToastContainer />
+      </QueryClientProvider>
     </div>
   );
 }
