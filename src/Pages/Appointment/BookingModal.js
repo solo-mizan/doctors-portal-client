@@ -1,14 +1,52 @@
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { format } from 'date-fns';
 import React from 'react';
+import auth from '../../firebase.init';
+import { toast } from 'react-toastify';
 
 const BookingModal = ({ treatment, date, setTreatment }) => {
-    const { name, slots } = treatment;
+    const { _id, name, slots } = treatment;
+    const [user, loading, error] = useAuthState(auth);
+    const formattedDate = format(date, "PP");
 
     const handleBooking = (event) => {
         event.preventDefault();
         const slot = event.target.slot.value;
-        console.log(slot)
-        setTreatment(null);
+        const phone = event.target.phone.value;
+
+        const booking = {
+            treatmentId: _id,
+            treatment: name,
+            date: formattedDate,
+            slot,
+            patientEmail: user.email,
+            patientName: user.displayName,
+            PatientPhone: phone
+        }
+
+        console.log(booking);
+
+        fetch('http://localhost:5000/booking', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(booking)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.success) {
+                    toast.success(`Your appointment is set on ${formattedDate}  at ${slot}`)
+                    // to close booking modal
+                    setTreatment(null);
+                }
+                else{
+                    toast.error(`You already have an appointment on this time slot!`)
+                }
+                    
+
+            });
 
     }
 
@@ -31,8 +69,8 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
                                 slots.map(slot => <option value={slot}>{slot}</option>)
                             }
                         </select>
-                        <input type="text" name='name' placeholder="Your name" className="input input-bordered w-full max-w-xs" />
-                        <input type="text" name='email' placeholder="Email address" className="input input-bordered w-full max-w-xs" />
+                        <input type="text" name='name' value={user?.displayName} disabled className="input input-bordered w-full max-w-xs" />
+                        <input type="text" name='email' value={user.email} disabled className="input input-bordered w-full max-w-xs" />
                         <input type="text" name='phone' placeholder="Phone number" className="input input-bordered w-full max-w-xs" />
                         <input type="submit" value="Submit" className="btn btn-secondary w-full max-w-xs" />
                     </form>

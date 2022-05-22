@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigation } from 'react-day-picker';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -9,7 +8,7 @@ import Loading from '../Shared/Loading/Loading';
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    let from = location.state?.from?.pathname || "/";
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [signInWithGoogle, gUser, loading1, error1] = useSignInWithGoogle(auth);
     const [
@@ -29,8 +28,7 @@ const Login = () => {
     }
 
     if (gUser || user) {
-        console.log(gUser);
-        navigate(from, { replace: true })
+        navigate(from, { replace: true });
 
     }
 
