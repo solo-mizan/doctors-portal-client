@@ -4,7 +4,7 @@ import React from 'react';
 import auth from '../../firebase.init';
 import { toast } from 'react-toastify';
 
-const BookingModal = ({ treatment, date, setTreatment }) => {
+const BookingModal = ({ treatment, date, setTreatment, refetch }) => {
     const { _id, name, slots } = treatment;
     const [user, loading, error] = useAuthState(auth);
     const formattedDate = format(date, "PP");
@@ -38,13 +38,14 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
                 console.log(data)
                 if (data.success) {
                     toast.success(`Your appointment is set on ${formattedDate}  at ${slot}`)
+                    refetch();
                     // to close booking modal
                     setTreatment(null);
                 }
-                else{
+                else {
                     toast.error(`You already have an appointment on this time slot!`)
                 }
-                    
+
 
             });
 
@@ -64,7 +65,6 @@ const BookingModal = ({ treatment, date, setTreatment }) => {
                     <form onSubmit={handleBooking} className='grid grid-cols-1 gap-2 justify-items-center'>
                         <input type="text" readOnly={true} value={format(date, 'PP')} className="input input-bordered w-full max-w-xs" />
                         <select name='slot' className="select select-bordered w-full max-w-xs">
-                            <option disabled selected>Select booking time</option>
                             {
                                 slots.map(slot => <option value={slot}>{slot}</option>)
                             }
