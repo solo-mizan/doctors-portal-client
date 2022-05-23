@@ -8,6 +8,7 @@ import Loading from './Loading/Loading';
 const Navbar = () => {
     const [user, loading, error] = useAuthState(auth);
     const logOut = () => {
+        localStorage.removeItem('accessToken');
         signOut(auth);
     }
 
@@ -28,6 +29,9 @@ const Navbar = () => {
                             <li><Link to={'/about'}>About</Link></li>
                             <li><Link to={'/appointment'}>Appointment</Link></li>
                             <li><Link to={'/contact'}>Contact Us</Link></li>
+                            {
+                                user && <li><label for="my-drawer-2" class="lg:hidden">Open drawer</label></li>
+                            }
                             {
                                 user && <li><Link to={'/dashboard'}>Dashboard</Link></li>
                             }

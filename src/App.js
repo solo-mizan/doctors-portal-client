@@ -15,6 +15,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import MyAppointment from './Pages/Dashboard/MyAppointment';
 import MyReview from './Pages/Dashboard/MyReview';
+import MyHistory from './Pages/Dashboard/MyHistory';
+import Users from './Pages/Dashboard/Users';
 
 function App() {
 
@@ -35,12 +37,14 @@ function App() {
           <Route path='/contact' element={<ContactUs></ContactUs>}></Route>
           <Route path='/appointment' element={<RequireAuth><Appointment /></RequireAuth>}></Route>
           <Route path='/dashboard' element={
-          <RequireAuth>
-            <Dashboard />
+            <RequireAuth>
+              <Dashboard />
             </RequireAuth>
           }>
             <Route index element={<MyAppointment></MyAppointment>}></Route>
             <Route path='review' element={<MyReview></MyReview>}></Route>
+            <Route path='history' element={<MyHistory></MyHistory>}></Route>
+            <Route path='users' element={<Users></Users>}></Route>
           </Route>
         </Routes>
         <ToastContainer />
